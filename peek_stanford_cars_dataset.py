@@ -1,5 +1,10 @@
 import torchvision
+import matplotlib
 import matplotlib.pyplot as plt
+import os
+matplotlib.use('TkAgg')
+
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
 
 def show_images(dataset, num_samples=20, cols=4):

@@ -99,7 +99,7 @@ class SimpleUnet(nn.Module):
 def main():
     model = SimpleUnet()
     print("Num params: ", sum(p.numel() for p in model.parameters()))
-    model
+    print(model)
 
 
 if __name__ == "__main__":

@@ -3,12 +3,12 @@ from diffusion_forward import get_index_from_list
 from test_fwd_process import betas, sqrt_one_minus_alphas_cumprod, sqrt_recip_alphas, posterior_variance, T
 from simple_unet import SimpleUnet
 from diffusion_data import IMG_SIZE, BATCH_SIZE, show_tensor_image
-device = "cpu"
-model = SimpleUnet()
+import matplotlib.pyplot as plt
+from simple_unet import SimpleUnet
 
 
 @torch.no_grad()
-def sample_timestep(x, t):
+def sample_timestep(model, x, t):
     """
     Calls the model to predict the noise in the image and returns
     the denoised image.
@@ -34,7 +34,7 @@ def sample_timestep(x, t):
 
 
 @torch.no_grad()
-def sample_plot_image():
+def sample_plot_image(device):
     # Sample noise
     img_size = IMG_SIZE
     img = torch.randn((1, 3, img_size, img_size), device=device)

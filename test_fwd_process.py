@@ -1,10 +1,11 @@
 import torch
 import torch.nn.functional as F
+import matplotlib
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from diffusion_forward import linear_beta_schedule, forward_diffusion_sample
 from diffusion_data import load_transformed_dataset, show_tensor_image, BATCH_SIZE, IMG_SIZE
-
+matplotlib.use('TkAgg')
 
 T = 300
 betas = linear_beta_schedule(timesteps=T)
