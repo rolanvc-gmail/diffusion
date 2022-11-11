@@ -22,6 +22,5 @@ def forward_diffusion_sample(x_0, t, p_sqrt_alpha_cumprod, p_sqrt_one_minus_alph
     noise = torch.randn_like(x_0)  # create noise like x_0
     sqrt_alphas_cumprod_t = get_index_from_list(p_sqrt_alpha_cumprod, t, x_0.shape)
     sqrt_one_minus_alphas_cumprod_t = get_index_from_list(p_sqrt_one_minus_alpha_cumprod, t, x_0.shape)
-    print(F"t size: {t.shape[0]}   sqrt_one_minus_alpha size:{sqrt_one_minus_alphas_cumprod_t.shape[0]} sqrt_alphas_cumprod_t size: {sqrt_one_minus_alphas_cumprod_t.shape[0]} noise size:{noise.shape[0]}")
     return sqrt_alphas_cumprod_t.to(device) * x_0.to(device) + sqrt_one_minus_alphas_cumprod_t.to(device) * noise.to(device), noise.to(device)
 

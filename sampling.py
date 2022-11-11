@@ -34,7 +34,7 @@ def sample_timestep(model, x, t):
 
 
 @torch.no_grad()
-def sample_plot_image(device):
+def sample_plot_image(model, device, epoch):
     # Sample noise
     img_size = IMG_SIZE
     img = torch.randn((1, 3, img_size, img_size), device=device)
@@ -45,8 +45,8 @@ def sample_plot_image(device):
 
     for i in range(0, T)[::-1]:
         t = torch.full((1,), i, device=device, dtype=torch.long)
-        img = sample_timestep(img, t)
+        img = sample_timestep(model, img, t)
         if i % stepsize == 0:
-            plt.subplot(1, num_images, i / stepsize + 1)
+            plt.subplot(1, num_images, i // stepsize + 1)
             show_tensor_image(img.detach().cpu())
-    plt.show()
+    plt.savefig(F"images/image_{epoch}.png")

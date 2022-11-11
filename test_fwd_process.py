@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from diffusion_forward import linear_beta_schedule, forward_diffusion_sample
 from diffusion_data import load_transformed_dataset, show_tensor_image, BATCH_SIZE, IMG_SIZE
-matplotlib.use('TkAgg')
+# matplotlib.use('TkAgg')
 
 T = 300
 betas = linear_beta_schedule(timesteps=T)
@@ -18,6 +18,8 @@ sqrt_recip_alphas = torch.sqrt(1.0/alphas)   # as long as alphas, but each eleme
 sqrt_alphas_cumprod = torch.sqrt(alphas_cumprod)  # as long as alphas, each element is the sqrt of the cumprod.
 sqrt_one_minus_alphas_cumprod = torch.sqrt(1. - alphas_cumprod)  # as long as alphas.
 posterior_variance = betas * (1. - alphas_cumprod_prev) / (1. - alphas_cumprod)  # as long as alphas
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def main():
@@ -34,7 +36,7 @@ def main():
     for idx in range(0, T, step_size):
         t = torch.Tensor([idx]).type(torch.int64)
         plt.subplot(1, num_images + 1, int(idx / step_size) + 1)
-        image, noise = forward_diffusion_sample(image, t, sqrt_alphas_cumprod, sqrt_one_minus_alphas_cumprod)
+        image, noise = forward_diffusion_sample(image, t, sqrt_alphas_cumprod, sqrt_one_minus_alphas_cumprod, device)
         show_tensor_image(image)
 
     plt.show()

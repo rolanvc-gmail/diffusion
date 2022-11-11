@@ -9,8 +9,9 @@ from diffusion_forward import linear_beta_schedule
 from torch.nn import functional as F
 from torch.utils.data import DataLoader
 import os
+import matplotlib.pyplot as plt
 
-os.environ["PYTORCH_ENABLE_MPS_FALLBACK"] = "1"
+
 def main():
     T = 1000  # Timesteps
     betas = linear_beta_schedule(timesteps=T)
@@ -27,12 +28,14 @@ def main():
     model = SimpleUnet()
     data = load_transformed_dataset()
     dataloader = DataLoader(data, batch_size=BATCH_SIZE, shuffle=True, drop_last=True)
-    device = "mps"
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    print(F"device is: {device}")
     model.to(device)
     optimizer = Adam(model.parameters(), lr=0.001)
-    epochs = 100  # Try more!
+    epochs = 1000  # Try more!
 
     for epoch in range(epochs):
+        print(F"epoch:{epoch}")
         for step, batch in enumerate(dataloader):
             optimizer.zero_grad()
             t = torch.randint(0, T, (BATCH_SIZE,), device=device).long()
@@ -43,7 +46,7 @@ def main():
 
             if epoch % 5 == 0 and step == 0:
                 print(f"Epoch {epoch} | step {step:03d} Loss: {loss.item()} ")
-                sample_plot_image()
+                sample_plot_image(model, device, epoch)
 
 
 if __name__ == "__main__":
