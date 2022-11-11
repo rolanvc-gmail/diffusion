@@ -24,9 +24,9 @@ def load_transformed_dataset():
 
 def show_tensor_image(image):
     reverse_transforms = transforms.Compose([
-        transforms.Lambda(lambda t: (t + 1) / 2),
+        transforms.Lambda(lambda t: (t + 1) / 2), # reverses lambda t: ((t*2)-1)
         transforms.Lambda(lambda t: t.permute(1, 2, 0)), # CHW to HWC
-        transforms.Lambda(lambda t: t * 255.),
+        transforms.Lambda(lambda t: t * 255.),  #
         transforms.Lambda(lambda t: t.numpy().astype(np.uint8)),
         transforms.ToPILImage(),
     ])
@@ -34,7 +34,7 @@ def show_tensor_image(image):
     # Take first image of batch
     if len(image.shape) == 4:
         image = image[0, :, :, :]
-    plt.imshow(reverse_transforms(image.cpu()))
+    plt.imshow(reverse_transforms(image.cpu()))  #img is Tensor(3, 64, 64)
 
 
 if __name__ == "__main__":

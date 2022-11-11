@@ -10,6 +10,7 @@ from torch.nn import functional as F
 from torch.utils.data import DataLoader
 import os
 import matplotlib.pyplot as plt
+import time
 
 
 def main():
@@ -32,9 +33,15 @@ def main():
     print(F"device is: {device}")
     model.to(device)
     optimizer = Adam(model.parameters(), lr=0.001)
-    epochs = 1000  # Try more!
+    epochs = 100  # Try more!
 
+    start_time = time.time()
     for epoch in range(epochs):
+        if epoch > 1:
+            running_time = time.time()
+            ave_per_epoch = (running_time - start_time)/epoch
+            print(f"ave time per epoch is: {ave_per_epoch} seconds.")
+
         print(F"epoch:{epoch}")
         for step, batch in enumerate(dataloader):
             optimizer.zero_grad()
