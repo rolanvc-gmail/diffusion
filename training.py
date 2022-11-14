@@ -43,7 +43,14 @@ def main():
             print(f"ave time per epoch is: {ave_per_epoch} seconds.")
 
         print(F"epoch:{epoch}")
-        for step, batch in enumerate(dataloader):
+
+        step_start_time = time.time()
+        for step, batch in enumerate(dataloader):  # Total dataset size is 16185. Batch size is 128. Expect total steps to be 16185/128 = 125
+            print(f"epoch:{epoch}, step:{step}")
+            if step > 0:
+                step_running_time = time.time()
+                ave_per_step = (step_running_time - start_time) / step
+                print(f"ave time per step is: {ave_per_step} seconds.")
             optimizer.zero_grad()
             t = torch.randint(0, T, (BATCH_SIZE,), device=device).long()
             loss = get_loss(model=model, x_0=batch[0], t=t, p_sqrt_alpha_cumprod=sqrt_alphas_cumprod,
@@ -51,9 +58,9 @@ def main():
             loss.backward()
             optimizer.step()
 
-            if epoch % 5 == 0 and step == 0:
+            if step == 0:  # epoch % 5 == 0 and step == 0:  # Let's plot every epoch, but only for the first batch of each epoch...
                 print(f"Epoch {epoch} | step {step:03d} Loss: {loss.item()} ")
-                sample_plot_image(model, device, epoch)
+                sample_plot_image(model, betas, sqrt_recip_alphas, sqrt_one_minus_alphas_cumprod, posterior_variance, device, epoch, T)
 
 
 if __name__ == "__main__":
