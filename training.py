@@ -48,7 +48,7 @@ def main():
                 print(f"Epoch {epoch} | step {step:03d} Loss: {loss.item()} ")
                 sample_plot_image(model=model, betas=betas, sqrt_recip_alphas=sqrt_recip_alphas,
                                   sqrt_one_minus_alphas_cumprod=sqrt_one_minus_alphas_cumprod,
-                                  posterior_variance=posterior_variance, device=device, epoch=epoch)
+                                  posterior_variance=posterior_variance, device=device, epoch=epoch, T=T)
 
 
 if __name__ == "__main__":
