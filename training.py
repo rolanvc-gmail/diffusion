@@ -22,7 +22,7 @@ def save_checkpoint(model, epoch):
 def load_checkpoint(model):
     print("loading saved checkpoint")
     checkpoint = torch.load('./model/diffusion.pt')
-    model.load_state_dict(checkpoint['simple_unet_state.dict'])
+    model.load_state_dict(checkpoint['simple_unet_state'])
     epoch = checkpoint['epoch']
     return epoch
 
