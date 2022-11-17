@@ -58,6 +58,7 @@ def main():
 
     for epoch in range(start_epoch, epochs):
         print(F"epoch:{epoch}")
+        save_checkpoint(model, epoch)
         for step, batch in enumerate(dataloader):
             optimizer.zero_grad()
             t = torch.randint(0, T, (BATCH_SIZE,), device=device).long()
@@ -67,7 +68,6 @@ def main():
             optimizer.step()
 
             if epoch % 5 == 0 and step == 0:
-                save_checkpoint(model, epoch)
                 print(f"Epoch {epoch} | step {step:03d} Loss: {loss.item()} ")
                 sample_plot_image(model=model, betas=betas, sqrt_recip_alphas=sqrt_recip_alphas,
                                   sqrt_one_minus_alphas_cumprod=sqrt_one_minus_alphas_cumprod,
