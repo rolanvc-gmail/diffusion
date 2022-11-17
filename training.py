@@ -12,6 +12,21 @@ import os
 import matplotlib.pyplot as plt
 
 
+def save_checkpoint(model, epoch):
+    print(f"saving checkpoint at epoch{epoch}")
+    checkpoint = {'epoch': epoch,
+                  'simple_unet_state': model.state_dict()}
+    torch.save(checkpoint, './model/diffusion.pt')
+
+
+def load_checkpoint(model):
+    print("loading saved checkpoint")
+    checkpoint = torch.load('./model/diffusion.pt')
+    model.load_state_dict(checkpoint['simple_unet_state.dict'])
+    epoch = checkpoint['epoch']
+    return epoch
+
+
 def main():
     T = 1000  # Timesteps
     betas = linear_beta_schedule(timesteps=T)
@@ -34,7 +49,14 @@ def main():
     optimizer = Adam(model.parameters(), lr=0.001)
     epochs = 1000  # Try more!
 
-    for epoch in range(epochs):
+    if not os.path.exists('./model'):
+        os.makedirs('./model')
+
+    start_epoch = 0
+    if os.path.exists('./model/diffusion.pt'):
+        start_epoch = load_checkpoint(model)
+
+    for epoch in range(start_epoch, epochs):
         print(F"epoch:{epoch}")
         for step, batch in enumerate(dataloader):
             optimizer.zero_grad()
@@ -45,6 +67,7 @@ def main():
             optimizer.step()
 
             if epoch % 5 == 0 and step == 0:
+                save_checkpoint(model, epoch)
                 print(f"Epoch {epoch} | step {step:03d} Loss: {loss.item()} ")
                 sample_plot_image(model=model, betas=betas, sqrt_recip_alphas=sqrt_recip_alphas,
                                   sqrt_one_minus_alphas_cumprod=sqrt_one_minus_alphas_cumprod,
