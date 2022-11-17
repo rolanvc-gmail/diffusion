@@ -46,7 +46,9 @@ def main():
 
             if epoch % 5 == 0 and step == 0:
                 print(f"Epoch {epoch} | step {step:03d} Loss: {loss.item()} ")
-                sample_plot_image(model, device, epoch)
+                sample_plot_image(model=model, betas=betas, sqrt_recip_alphas=sqrt_recip_alphas,
+                                  sqrt_one_minus_alphas_cumprod=sqrt_one_minus_alphas_cumprod,
+                                  posterior_variance=posterior_variance, device=device, epoch=epoch)
 
 
 if __name__ == "__main__":
