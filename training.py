@@ -1,5 +1,6 @@
 import torch
 from simple_unet import SimpleUnet
+from unet import unet
 from torch.optim import Adam
 from diffusion_data import BATCH_SIZE
 from loss import get_loss
@@ -40,7 +41,7 @@ def main():
     sqrt_one_minus_alphas_cumprod = torch.sqrt(1. - alphas_cumprod)  # as long as alphas.
     posterior_variance = betas * (1. - alphas_cumprod_prev) / (1. - alphas_cumprod)  # as long as alphas
 
-    model = SimpleUnet()
+    model = unet()
     data = load_transformed_dataset()
     dataloader = DataLoader(data, batch_size=BATCH_SIZE, shuffle=True, drop_last=True)
     device = "cuda" if torch.cuda.is_available() else "cpu"
