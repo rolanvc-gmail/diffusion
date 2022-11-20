@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 from torch.nn import functional as F
-from utils import exists
+from .utils import exists
 from einops import rearrange, reduce
 from functools import partial
 

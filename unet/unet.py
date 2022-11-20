@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-from utils import default
+from .utils import default
 from functools import partial
 from .resnet_block import ResnetBlock
 from .position_embedding import SinusoidalPosEmb, RandomOrLearnedSinusoidalPosEmb
